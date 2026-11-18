@@ -1,0 +1,263 @@
+---
+title: Lock-in Mode - Class Diagram
+---
+classDiagram
+direction TB
+
+namespace game_py {
+    class Game {
+        +screen
+        +clock
+        +font  «Indie Flower»
+        +big_font  «Gaegu Bold»
+        +running
+        +state_stack : list~GameState~
+        +change_state(new_state)
+        +push_state(new_state)
+        +pop_state()
+        +quit()
+        +handle_events()
+        +update(dt)
+        +draw()
+        +run(start_state)
+    }
+}
+
+namespace states_py {
+    class GameState {
+        <<abstract>>
+        +game : Game
+        +enter()
+        +exit()
+        +handle_event(event)*
+        +update(dt)*
+        +draw(screen)*
+    }
+    class MenuState {
+        +SHOOT
+        +COLLECT
+        +handle_event(event)
+        +update(dt)
+        +draw(screen)
+        -_draw_column(screen, title, color, items, x)
+    }
+    class PlayState {
+        -_player : Player
+        -_bullets : list~Bullet~
+        -_enemies : list~Enemy~
+        -_enemy_bullets : list~EnemyBullet~
+        -_powerups : list~PowerUp~
+        -_score_manager : ScoreManager
+        -_observers : list
+        -_spawn_timer
+        -_boss_timer
+        -_powerup_timer
+        -_paper_scroll
+        -_elapsed
+        +week  «property»
+        +spawn_interval  «property»
+        +boss_interval  «property»
+        +enter()
+        +handle_event(event)
+        +update(dt)
+        +draw(screen)
+        -_all_objects()
+        -_spawn_enemy()
+        -_spawn(dt)
+        -_check_collisions()
+        -_draw_paper(screen)
+        -_draw_hud(screen)
+    }
+    class PauseState {
+        -_overlay : Surface
+        +handle_event(event)
+        +update(dt)
+        +draw(screen)
+    }
+    class GameOverState {
+        -_final_score
+        -_grade
+        +handle_event(event)
+        +update(dt)
+        +draw(screen)
+    }
+}
+
+namespace entities_py {
+    class GameObject {
+        <<abstract>>
+        -_x
+        -_y
+        -_width
+        -_height
+        -_active
+        +active  «property»
+        +rect  «property»
+        +kill()
+        +blit_image(screen, image)
+        +update(dt)*
+        +draw(screen)*
+    }
+    class Player {
+        -_speed
+        -_base_speed
+        -_boost_timer
+        -_invincible_timer
+        -_health : Health
+        -_weapon : Weapon
+        +speed  «property + setter»
+        +health  «property»
+        +center_x  «property»
+        +is_boosted  «property»
+        +is_invincible  «property»
+        +hit(damage) bool
+        +boost_speed(multiplier, duration)
+        +try_shoot() Bullet
+        +update(dt)
+        +draw(screen)
+    }
+    class Bullet {
+        -_speed
+        +update(dt)
+        +draw(screen)
+    }
+    class EnemyBullet {
+        -_speed
+        +update(dt)
+        +draw(screen)
+    }
+    class Enemy {
+        +IMAGE
+        -_color
+        -_speed
+        -_health : Health
+        -_points
+        +points  «property»
+        +try_shoot() None
+        +take_hit(damage)
+        +image_name() str
+        +update(dt)
+        +draw(screen)
+    }
+    class Homework {
+        +update(dt)
+    }
+    class Quiz {
+        -_time
+        +update(dt)
+    }
+    class MidtermBoss {
+        -_target : Player
+        -_weapon : Weapon
+        +image_name() str
+        +update(dt)
+        +draw(screen)
+        +try_shoot() EnemyBullet
+    }
+    class PowerUp {
+        <<abstract>>
+        +IMAGE
+        -_color
+        -_speed
+        +update(dt)
+        +draw(screen)
+        +apply(player)*
+    }
+    class Coffee {
+        +apply(player)
+    }
+    class Sleep {
+        +apply(player)
+    }
+}
+
+namespace components_py {
+    class Health {
+        -_hp
+        -_max_hp
+        +hp  «property + setter»
+        +max_hp  «property»
+        +is_alive  «property»
+        +take_damage(amount)
+        +heal(amount)
+    }
+    class Weapon {
+        -_cooldown
+        -_timer
+        +update(dt)
+        +try_fire() bool
+    }
+}
+
+namespace sprites_py {
+    class sprites {
+        <<module>>
+        +DRAWING_SIZES
+        +ASSET_DIR
+        +get_image(name) Surface
+        +load_drawing(name) Surface
+        +remove_white_background(image)
+        +make_player()
+        +make_homework()
+        +make_quiz()
+        +make_boss(angry)
+        +make_coffee()
+        +make_sleep()
+        +make_pencil()
+        +make_red_pen()
+        +make_grade_f()
+        +make_grade_stamp(grade)
+        +grade_image_name(grade) str
+    }
+}
+
+namespace observers_py {
+    class ScoreManager {
+        +GRADE_CUTOFFS
+        -_score
+        -_kills
+        -_hits_taken
+        +score  «property»
+        +kills  «property»
+        +hits_taken  «property»
+        +grade  «property»
+        +handle_event(event)
+    }
+}
+
+Game o-- "0..*" GameState : state_stack
+GameState --> Game : game
+
+GameState <|-- MenuState
+GameState <|-- PlayState
+GameState <|-- PauseState
+GameState <|-- GameOverState
+
+PlayState *-- "1" Player
+PlayState *-- "0..*" Bullet
+PlayState *-- "0..*" EnemyBullet
+PlayState *-- "0..*" Enemy
+PlayState *-- "0..*" PowerUp
+PlayState *-- "1" ScoreManager : observer
+
+GameObject <|-- Player
+GameObject <|-- Bullet
+GameObject <|-- EnemyBullet
+GameObject <|-- Enemy
+GameObject <|-- PowerUp
+Enemy <|-- Homework
+Enemy <|-- Quiz
+Enemy <|-- MidtermBoss
+PowerUp <|-- Coffee
+PowerUp <|-- Sleep
+
+Player *-- "1" Health
+Player *-- "1" Weapon
+Enemy *-- "1" Health
+MidtermBoss *-- "1" Weapon
+MidtermBoss --> Player : _target
+
+Player ..> Bullet : creates
+MidtermBoss ..> EnemyBullet : creates
+PowerUp ..> Player : apply()
+GameObject ..> sprites : get_image()
