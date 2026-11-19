@@ -1,15 +1,8 @@
 # 🎓 Lock-in Mode
 
-เกมยิงแนวตั้ง 2D สร้างด้วย Pygame-ce สำหรับโปรเจกต์ประจำวิชา **SF211 การเขียนโปรแกรมเชิงวัตถุ** (ภาค 1/2569)
+เกมยิงแนวตั้ง 2D สร้างด้วย Pygame-ce 
 
 ผู้เล่นคือนักศึกษาที่ต้อง "lock in" ยิงงานที่พุ่งเข้ามาก่อนจะชนตัวเอง ตั้งแต่การบ้าน ควิซ ไปจนถึงบอสมิดเทอม เก็บกาแฟและการนอนเพื่อเอาตัวรอด แล้วดูว่าจบเกมได้เกรดอะไร
-
-## 👥 สมาชิกทีม
-
-| ชื่อ | รหัสนักศึกษา |
-|---|---|
-| ชลันธร ศรีนวนจันทร์ | 6710742336 |
-| สิทธิศักดิ์ มงคลสวัสดิ์ | 6710742252 |
 
 ## ⚙️ ความต้องการของระบบ
 
@@ -120,17 +113,3 @@ lock_in_mode/
 
 แผนภาพคลาส UML ทั้งหมดอยู่ที่ [`docs/class-diagram.png`](docs/class-diagram.png)
 
-## 🤖 การใช้ AI
-
-ทีมใช้ Claude ช่วยวางแผน อธิบายแนวคิด และเขียนโค้ดบางส่วน รายละเอียดว่าส่วนไหน AI เขียน ส่วนไหนทีมเขียน และทีมตรวจสอบอย่างไร บันทึกไว้ใน [`AI_LOG.md`](AI_LOG.md)
-
-## 🎨 ที่มาของ Asset
-
-| Asset | ที่มา | สัญญาอนุญาต |
-|---|---|---|
-| ภาพตัวละคร กระสุนดินสอ กระสุน F และเกรดตอนจบเกม (`assets/*.png`) | สร้างโดย Claude (AI) ด้วยโค้ดวาดภาพแบบลายเส้นมือ (ไลบรารี rough.js, MIT) ตามไอเดียที่ทีมกำหนด รายละเอียดใน `AI_LOG.md` | ทีมเป็นผู้ใช้งาน |
-| ฟอนต์หัวข้อและโลโก้ Gaegu Bold (`assets/fonts/Gaegu-Bold.ttf`) | Google Fonts | SIL Open Font License 1.1 (`assets/fonts/OFL-Gaegu.txt`) |
-| ฟอนต์ Permanent Marker (`assets/fonts/PermanentMarker-Regular.ttf`) ใช้ตอนสร้างภาพเกรดตอนจบเกม | Google Fonts | Apache License 2.0 (`assets/fonts/LICENSE-PermanentMarker.txt`) |
-| ฟอนต์ข้อความ Indie Flower (`assets/fonts/IndieFlower-Regular.ttf`) | Google Fonts | SIL Open Font License 1.1 (`assets/fonts/OFL-IndieFlower.txt`) |
-
-ถ้าไม่มีไฟล์รูปหรือฟอนต์ตัวไหน เกมจะใช้ภาพที่วาดด้วยคำสั่งของ Pygame ใน `sprites.py` และฟอนต์เริ่มต้นของ Pygame แทน เกมจึงเปิดได้เสมอ
