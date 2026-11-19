@@ -27,16 +27,6 @@ python -m pip install pygame-ce
 python main.py
 ```
 
-## 🧪 การทดสอบ
-
-ชุดทดสอบอัตโนมัติ 27 ข้อ รันได้โดยไม่เปิดหน้าต่างเกม ครอบคลุม encapsulation, คอมโพเนนต์, ABC, inheritance, polymorphism, observer, การชน, อมตะชั่วคราว, ทุกเส้นทางของหน้าจอ การวาดทุกหน้าจอกับวัตถุทุกชนิด และความยากที่เพิ่มขึ้นตามเวลา:
-
-```bash
-python -m unittest -v test_game
-```
-
-ทดสอบเฉพาะ `Health` และ `Weapon`: `python check_components.py`
-
 ## 🎮 การควบคุม
 
 | หน้าจอ | ปุ่ม | การทำงาน |
